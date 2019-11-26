@@ -460,7 +460,14 @@ extern "C" {
 
 PyObject* PyInit_system(void) {
 	Py_Initialize();
-	return PyModule_Create(&system_definition);
+	auto m = PyModule_Create(&system_definition);
+
+	if (PyType_Ready(&SimSystem_Type) < 0)
+		return nullptr;
+
+	Py_INCREF(&SimSystem_Type);
+	PyModule_AddObject(m, "SimSystem", (PyObject *) &SimSystem_Type);
+	return m;
 }
 
 }
@@ -469,13 +476,11 @@ PyObject* PyInit_system(void) {
 // void initsystem(void) {
 // 	PyObject *m;
 // 	/* Finalize the simulation system object type */
-// 	if (PyType_Ready(&SimSystem_Type) < 0)
-// 		return;
 
 // 	m = Py_InitModule("system", System_methods, "");
 // 	if (m == NULL)
 // 		return;
 
 // 	Py_INCREF(&SimSystem_Type);
-// 	PyModule_AddObject(m, "SimSystem", (PyObject *) &SimSystem_Type);
+//
 // }
