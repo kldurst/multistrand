@@ -4,7 +4,7 @@
 # Chris Berlind                                                                
 # Frits Dannenberg                                                             
 
-from interface import Interface
+from .interface import Interface
 from ..objects import Strand, Complex, StopCondition
 from ..__init__ import __version__
 
@@ -422,7 +422,7 @@ class Options(object):
             warningmsg += "JS-Default"
             self.JSDefault()
             
-        print warningmsg 
+        print(warningmsg) 
         self.rate_scaling = None       
         
     # FD, May 5th 2017

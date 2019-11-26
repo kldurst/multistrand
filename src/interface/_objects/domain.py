@@ -1,5 +1,5 @@
 from ..utils import generate_sequence
-from strand import Strand
+from .strand import Strand
 
 
 class Domain(object):

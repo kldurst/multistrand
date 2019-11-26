@@ -1,4 +1,4 @@
-from strand import Strand
+from .strand import Strand
 
 
 class Complex(object):

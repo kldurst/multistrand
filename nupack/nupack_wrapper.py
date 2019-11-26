@@ -145,7 +145,7 @@ def pfunc(sequences, ordering = None, material = 'dna',
   ## Perform call until it works (should we have a max # of tries before quitting?)
   output, error = call_with_pipe(args, cmd_input)
   while len(output) < 4 : # can't figure out why, but occasionally NUPACK returns empty-handed.  Subsequent tries seem to work...
-      print 'Retrying pfunc: NUPACK failed with output ' + `output` + ' and error ' + `error` +" ."
+      print('Retrying pfunc: NUPACK failed with output ' + output + ' and error ' + error + " .")
       output, error = call_with_pipe(args, cmd_input)
 
   ## Parse and return output

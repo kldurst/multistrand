@@ -7,6 +7,8 @@ import distutils.sysconfig
 import os, sys
 
 config_vars = distutils.sysconfig.get_config_vars()
+os.environ["CC"] = "/usr/bin/clang++"
+os.environ["CXX"] = "/usr/bin/clang++"
 
 sources = ["src/system/utility.cc",
            "src/system/sequtil.cc",

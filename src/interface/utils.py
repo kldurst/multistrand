@@ -3,7 +3,7 @@ import os, random
 
 import numpy as np
 
-from _objects.strand import Strand
+from ._objects.strand import Strand
 from nupack import mfe
 
 """ Returns the melting temperature in Kelvin for a duplex of the given sequence.
