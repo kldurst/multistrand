@@ -11,7 +11,7 @@
 #include <string>
 #include "optionlists.h"
 #include "utility.h"
-//#include <python2.7/Python.h>
+//#include <Python.h>
 
 using std::string;
 //using namespace utility;

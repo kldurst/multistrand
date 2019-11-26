@@ -22,12 +22,14 @@
 #include "google/heap-profiler.h"
 #endif
 
-typedef struct {
 
+typedef struct {
 	PyObject_HEAD
 	SimulationSystem *ob_system; /* Our one data member, no other attributes. */
 	PyObject* options;
 } SimSystemObject;
+
+PyObject *cast(SimSystemObject *ptr) {return reinterpret_cast<PyObject *>(ptr);}
 
 static PyObject *SimSystemObject_new(PyTypeObject *type, PyObject *args, PyObject *kwds) {
 
@@ -127,7 +129,7 @@ static void SimSystemObject_dealloc(SimSystemObject *self) {
 
 	SimSystemObject_clear(self);
 
-	self->ob_type->tp_free((PyObject *) self);
+	cast(self)->ob_type->tp_free((PyObject *) self);
 }
 
 const char docstring_SimSystem[] =
@@ -445,17 +447,35 @@ run_system( options )\n\
 Run the system defined by the passed in Options object.\n") }, { NULL } /*Sentinel*/
 		};
 
-PyMODINIT_FUNC initsystem(void) {
-	PyObject *m;
-	/* Finalize the simulation system object type */
-	if (PyType_Ready(&SimSystem_Type) < 0)
-		return;
+static struct PyModuleDef system_definition = {
+	PyModuleDef_HEAD_INIT,
+	"system",
+	"Base module for holding System objects.",
+	-1,
+	System_methods,
+	nullptr, nullptr, nullptr, nullptr
+};
 
-	m = Py_InitModule3("system", System_methods, "Base module for holding System objects.");
-	if (m == NULL)
-		return;
+extern "C" {
 
-	Py_INCREF(&SimSystem_Type);
-	PyModule_AddObject(m, "SimSystem", (PyObject *) &SimSystem_Type);
+PyObject* PyInit_system(void) {
+	Py_Initialize();
+	return PyModule_Create(&system_definition);
+}
 
 }
+
+
+// void initsystem(void) {
+// 	PyObject *m;
+// 	/* Finalize the simulation system object type */
+// 	if (PyType_Ready(&SimSystem_Type) < 0)
+// 		return;
+
+// 	m = Py_InitModule("system", System_methods, "");
+// 	if (m == NULL)
+// 		return;
+
+// 	Py_INCREF(&SimSystem_Type);
+// 	PyModule_AddObject(m, "SimSystem", (PyObject *) &SimSystem_Type);
+// }
