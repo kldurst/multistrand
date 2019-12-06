@@ -45,7 +45,7 @@ energy( [c], o, Complex_Energy)  # should be -1.1449...
 # Using this sequence, find the energy for a particular secondar structure conformation.
 def print_hp(s):
     e = energy( [Complex( strands=[Strand(name="hairpin", sequence="GTTCGGGCAAAAGCCCGAAC")], structure=s)], o, Complex_Energy)[0]  
-    print s + '  (%5.2f)' % e
+    print(s + '  (%5.2f)' % e)
     return e
 
 # Manually define a set of secondary structures for our hairpin, closing from the outside.
@@ -94,4 +94,4 @@ def myplot():
 if __name__ == '__main__':
     myplot()
 else:
-    print "Try:\nhairpin_energies.myplot()\n"
+    print("Try:\nhairpin_energies.myplot()\n")

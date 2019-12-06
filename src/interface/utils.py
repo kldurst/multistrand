@@ -2,6 +2,7 @@
 import os, random
 
 import numpy as np
+from functools import reduce
 
 from ._objects.strand import Strand
 from nupack import mfe

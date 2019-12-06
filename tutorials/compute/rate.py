@@ -9,7 +9,7 @@ def errorPrint():
     print("Please provide a DNA sequence as the second argument")
     print("Add -bootstrap to do a boostrap ")
     print("Example: rate.py dissociation ATGCAGT -bootstrap")
-    exit()
+    sys.exit()
 
 if(len(sys.argv) < 2):
     errorPrint()

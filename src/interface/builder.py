@@ -23,6 +23,7 @@ from scipy.sparse import csr_matrix, coo_matrix, csc_matrix
 from scipy.sparse.linalg import spsolve, bicg, bicgstab, cg, cgs, gmres, lgmres, qmr, inv
 
 import numpy as np
+from functools import reduce
 
 floatT = np.longdouble
 
@@ -404,7 +405,7 @@ class Builder(object):
 
     def mergeSet(self, this, that):
 
-        for key, val in that.iteritems():
+        for key, val in that.items():
 
             if not key in this:
                 this[key] = val;
@@ -421,7 +422,7 @@ class Builder(object):
 
     def transitionMerge(self, other):
         
-        for key, value in other.protoTransitions.iteritems():
+        for key, value in other.protoTransitions.items():
             
             sFrom = key[0]
             sTo = key[1]
@@ -564,7 +565,7 @@ class Builder(object):
             
             return o1
         
-        for key, value in self.protoSpace.iteritems():
+        for key, value in self.protoSpace.items():
 
             if ogVerb and ((counter % 100) == 0):
                 print("Searching for missing transitions. Progress " + str(counter) + " / " + str(len(self.protoSpace)))
@@ -608,7 +609,7 @@ class Builder(object):
 #             
 #             return o1
 #         
-#         for key, value in self.protoSpace.iteritems():
+#         for key, value in self.protoSpace.items():
 # 
 #             if ogVerb and ((counter % 100) == 0):
 #                 print "Searching for missing transitions. Progress " + str(counter) + " / " + str(len(self.protoSpace))
@@ -869,7 +870,7 @@ class Builder(object):
 
         if not ignoreInitialState:
 
-            for key, val in initStates.iteritems():
+            for key, val in initStates.items():
                 if not key in self.protoInitialStates:
                     self.protoInitialStates[key] = val;
                 else:

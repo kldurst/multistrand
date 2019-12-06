@@ -38,6 +38,7 @@ def dGadjust(T,N):
 def get_nupack_exec_path(exec_name):
   """ If the NUPACKHOME environment variable is set, use that as the directory
   of the NUPACK executables. Otherwise, have Python search the PATH directly. """
+  return '/Users/kaleighdurst/Documents/nupack-core/build/bin/' + exec_name
   if 'NUPACKHOME' in os.environ:
     if('3.0' in os.environ['NUPACKHOME']):
         return os.environ['NUPACKHOME'] + '/bin/' + exec_name;
@@ -48,6 +49,8 @@ def get_nupack_exec_path(exec_name):
 
 def setup_args(**kargs):
   """ Returns the list of tokens specifying the command to be run in the pipe. """
+  print(get_nupack_exec_path(kargs['exec_name']))
+  print(kargs['exec_name'])
   args = [get_nupack_exec_path(kargs['exec_name']),
           '-material', kargs['material'],   '-sodium', kargs['sodium'],
           '-magnesium', kargs['magnesium'], '-dangles', kargs['dangles'], '-T', kargs['T']]
@@ -106,7 +109,7 @@ def call_with_file(args, cmd_input, outsuffix):
   args = [str(s) for s in args] # all argument elements must be strings
   cmd_input = outprefix + '\n' + cmd_input # prepend the output file prefix to the input for NUPACK
   p = sub.Popen(args, stdin=sub.PIPE, stdout=sub.PIPE, stderr=sub.STDOUT)
-  p.communicate(cmd_input)
+  p.communicate(cmd_input.encode())
   
   ## Process and return output
   # Read output file and clean it up
@@ -125,8 +128,8 @@ def call_with_pipe(args, cmd_input):
   args = [str(s) for s in args] # all argument elements must be strings
   
   p=sub.Popen(args,stdin=sub.PIPE,stdout=sub.PIPE,stderr=sub.PIPE)
-  output,error = p.communicate(cmd_input)
-  output_lines = output.split('\n')
+  output,error = p.communicate(cmd_input.encode())
+  output_lines = output.decode().split('\n')
   return (output_lines, error)
     
 def pfunc(sequences, ordering = None, material = 'dna',
@@ -141,7 +144,7 @@ def pfunc(sequences, ordering = None, material = 'dna',
     setup_nupack_input(exec_name = 'pfunc', sequences = sequences, ordering = ordering,
                        material = material, sodium = sodium, magnesium = magnesium,
                        dangles = dangles, T = T, multi = multi, pseudo = pseudo)
-  
+  print(args)
   ## Perform call until it works (should we have a max # of tries before quitting?)
   output, error = call_with_pipe(args, cmd_input)
   while len(output) < 4 : # can't figure out why, but occasionally NUPACK returns empty-handed.  Subsequent tries seem to work...

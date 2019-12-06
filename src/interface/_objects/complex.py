@@ -1,5 +1,5 @@
 from .strand import Strand
-
+from functools import reduce
 
 class Complex(object):
 
@@ -265,6 +265,7 @@ class Complex(object):
                 sample_exec = os.environ['NUPACKHOME'] + '/build/bin/sample'
         else:
             sample_exec = 'sample' 
+        sample_exec = '/Users/kaleighdurst/Documents/nupack-core/build/bin/sample'
         
         material = []
         if self._substrate_type == None:
@@ -308,7 +309,7 @@ class Complex(object):
                                                    "\n".join([i.sequence for i in self.strand_list]),
                                                    " ".join([str(i + 1) for i in range(len(self.strand_list))])
                                                  )
-        result = p.communicate(input_str)[0]
+        result = p.communicate(input_str.encode())[0]
         
         f = open(tmp.name, "rt")
         lines = f.readlines()
@@ -316,8 +317,8 @@ class Complex(object):
         f.close()
         os.remove(tmp.name)  # was created by us [NamedTemporaryFile] and
                             # used by the sampler, thus we need to clean it up.
-        if not ("NUPACK 3.0" in lines[0] or 'NUPACK 3.2' in lines[0]):
-            raise IOError("Boltzmann sample function is not up to date. NUPACK 3.2.0 or greater needed.")
+        # if not ("NUPACK 3.0" in lines[0] or 'NUPACK 3.2' in lines[0]):
+        #     raise IOError("Boltzmann sample function is not up to date. NUPACK 3.2.0 or greater needed.")
         
         self._boltzmann_queue = lines[14:] * self.boltzmann_supersample
         if len(self._boltzmann_queue) < 1:
